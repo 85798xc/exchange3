@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+       file: db/changelog/changeset/01-create-supported-currencies.yaml
+  - include:
+       file: db/changelog/changeset/02-create-api-request-logs.yaml

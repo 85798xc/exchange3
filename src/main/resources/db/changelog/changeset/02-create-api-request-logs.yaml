@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Andrej
+      changes:
+        - createTable:
+            tableName: api_request_logs
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: response
+                  type: TEXT
