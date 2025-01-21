@@ -2,6 +2,7 @@ package com.example.exchange.controller;
 
 import com.example.exchange.entity.Currency;
 import com.example.exchange.service.CurrencyService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ public class CurrencyController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all currencies", description = "This API endpoint returns all currencies.")
     public ResponseEntity<List<Currency>> getAllCurrency() {
         List<Currency> currencies = currencyService.getAllCurrencies();
         return new ResponseEntity<>(currencies, HttpStatus.OK);
