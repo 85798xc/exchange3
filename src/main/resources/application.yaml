@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: exchange
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+# logging:
+#   level:
+#     org.springframework: DEBUG
+#     com.zaxxer.hikari: DEBUG
