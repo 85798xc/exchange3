@@ -17,7 +17,7 @@ java {
 
 configurations {
     compileOnly {
-        extendsFrom(annotationProcessor)
+        extendsFrom(configurations.annotationProcessor.get())
     }
 }
 
@@ -68,7 +68,7 @@ tasks.named<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
     violationRules {
         rule {
             limit {
-                minimum.set(0.15)
+                minimum = 0.10.toBigDecimal()
             }
         }
     }

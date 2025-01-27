@@ -4,7 +4,6 @@ import com.example.exchange.dto.CurrencyDto;
 import com.example.exchange.service.CurrencyService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
