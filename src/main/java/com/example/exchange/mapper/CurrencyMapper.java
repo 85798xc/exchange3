@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 public class CurrencyMapper {
 
     public CurrencyDto toDto(Currency currency) {
-        return new CurrencyDto(currency.getCurrency());
+        return new CurrencyDto(currency.getName());
     }
 
     public Currency toEntity(CurrencyDto currencyDto) {
-        return Currency.builder().currency(currencyDto.currency()).build();
+        return Currency.builder().name(currencyDto.currency()).build();
     }
 
 }

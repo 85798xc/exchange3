@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "currencies")
+@Table(name = "currency")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,8 +23,8 @@ public class Currency {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "currency", nullable = false, unique = true)
-    private String currency;
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
 
 }
