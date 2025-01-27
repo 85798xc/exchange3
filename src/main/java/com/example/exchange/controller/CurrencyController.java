@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class CurrencyController {
 
-  private final CurrencyService currencyService;
+    private final CurrencyService currencyService;
 
-  @GetMapping
-  @ResponseStatus(HttpStatus.OK)
-  @Operation(summary = "Get all currencies",
-      description = "This API endpoint returns all currencies.")
-  public List<CurrencyDto> getAllCurrency() {
-    return currencyService.getAllCurrencies();
-  }
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all currencies",
+            description = "This API endpoint returns all currencies.")
+    public List<CurrencyDto> getAllCurrency() {
+        return currencyService.getAllCurrencies();
+    }
 
 }
