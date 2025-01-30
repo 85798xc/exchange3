@@ -42,36 +42,35 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-}
-
 jacoco {
     toolVersion = "0.8.12"
 }
 
-tasks.named("build") {
-    dependsOn(tasks.named("jacocoTestCoverageVerification"))
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }
 
-tasks.named<JacocoReport>("jacocoTestReport") {
-    dependsOn(tasks.named("test"))
-
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-        csv.required.set(false)
-    }
+tasks.check {
+    dependsOn(tasks.jacocoTestCoverageVerification)
 }
 
-tasks.named<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
+tasks.jacocoTestCoverageVerification {
+    dependsOn(tasks.jacocoTestReport)
     violationRules {
         rule {
             limit {
-                minimum = 0.10.toBigDecimal()
+                minimum = 0.95.toBigDecimal()
             }
         }
     }
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 checkstyle {

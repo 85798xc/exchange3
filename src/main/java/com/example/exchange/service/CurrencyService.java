@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class CurrencyService {
 
-    private final CurrencyRepository currencyRepository;
-    private final CurrencyMapper currencyMapper;
+  private final CurrencyRepository currencyRepository;
+  private final CurrencyMapper currencyMapper;
 
 
-    public List<CurrencyDto> getAllCurrencies() {
-        return currencyRepository.findAll().stream()
-                .map(currencyMapper::toDto)
-                .toList();
-    }
+  public List<CurrencyDto> getAllCurrencies() {
+    return currencyRepository.findAll().stream()
+        .map(currencyMapper::toDto)
+        .toList();
+  }
 }

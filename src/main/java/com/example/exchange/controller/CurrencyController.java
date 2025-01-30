@@ -3,6 +3,7 @@ package com.example.exchange.controller;
 import com.example.exchange.dto.CurrencyDto;
 import com.example.exchange.service.CurrencyService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,14 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class CurrencyController {
 
-    private final CurrencyService currencyService;
+  private final CurrencyService currencyService;
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all currencies",
-            description = "This API endpoint returns all currencies.")
-    public List<CurrencyDto> getAllCurrency() {
-        return currencyService.getAllCurrencies();
-    }
+  @GetMapping("/currencies")
+  @ResponseStatus(HttpStatus.OK)
+  @Operation(summary = "Get all currencies",
+      description = "This API endpoint returns all currencies.")
+  @ApiResponse(responseCode = "200",
+      description = "Successful response, returns list of currencies")
+  public List<CurrencyDto> getAllCurrency() {
+    return currencyService.getAllCurrencies();
+  }
 
 }
