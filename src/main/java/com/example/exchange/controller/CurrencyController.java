@@ -3,6 +3,7 @@ package com.example.exchange.controller;
 import com.example.exchange.dto.CurrencyDto;
 import com.example.exchange.service.CurrencyService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,8 @@ public class CurrencyController {
   @Operation(summary = "Get all currencies",
       description = "This API endpoint returns all currencies.")
   @ApiResponse(responseCode = "200",
-      description = "Successful response, returns list of currencies")
+      description = "Successful response, returns list of currencies",
+      content = @Content(mediaType = "application/json"))
   public List<CurrencyDto> getAllCurrency() {
     return currencyService.getAllCurrencies();
   }
