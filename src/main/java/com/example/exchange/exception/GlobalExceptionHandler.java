@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+  public ResponseEntity<ErrorResponse> handleConstraintViolationException(
+      ConstraintViolationException e) {
     String errorMessage = e.getMessage();
     ErrorResponse errorResponse = new ErrorResponse(
         "Validation Error",
@@ -21,6 +22,7 @@ public class GlobalExceptionHandler {
         Instant.now(),
         HttpStatus.BAD_REQUEST.value()
     );
+
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
@@ -39,16 +41,6 @@ public class GlobalExceptionHandler {
 
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
-
-
-
-
-
-
-
-
-
-
 
 
 }
