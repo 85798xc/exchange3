@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 public class CurrencyIntegrationTest extends BaseIntegrationTest {
 
   @Autowired
@@ -31,5 +32,18 @@ public class CurrencyIntegrationTest extends BaseIntegrationTest {
 
   }
 
+
+  @Test
+  public void testAddCurrency() throws Exception {
+
+    currencyController.addCurrency("EUR");
+
+    List<Currency> currencies = currencyRepository.findAll();
+
+    System.out.println(currencies);
+
+    assertThat(currencies.getFirst().getName()).isEqualTo("EUR");
+
+  }
 
 }
