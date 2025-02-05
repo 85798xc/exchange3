@@ -1,10 +1,13 @@
 package com.example.exchange.controller;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import com.example.exchange.dto.CurrencyDto;
+import com.example.exchange.exception.CurrencyAlreadyExistException;
 import com.example.exchange.service.CurrencyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -23,23 +26,20 @@ public class CurrencyControllerTest {
   @MockitoBean
   CurrencyService currencyService;
   @Autowired
-  private MockMvc mockMvc;
+  private MockMvc mvc;
   @Autowired
   private ObjectMapper objectMapper;
 
   @Test
   void performGetShouldReturnOk() throws Exception {
 
-    List<CurrencyDto> mockCurrencies = List.of(
-        new CurrencyDto("USD"),
-        new CurrencyDto("EUR"),
-        new CurrencyDto("JPY")
-    );
+    List<CurrencyDto> mockCurrencies = List.of(new CurrencyDto("USD"), new CurrencyDto("EUR"),
+        new CurrencyDto("JPY"));
 
     when(currencyService.getAllCurrencies()).thenReturn(mockCurrencies);
 
-    MvcResult mvcResult = mockMvc.perform(get("/api/v1/currencies")
-            .contentType(MediaType.APPLICATION_JSON))
+    MvcResult mvcResult = mvc.perform(
+            get("/api/v1/currencies").contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
     String responseBody = mvcResult.getResponse().getContentAsString();
@@ -51,8 +51,38 @@ public class CurrencyControllerTest {
     assertThat(currencies.get(1).currency()).isEqualTo("EUR");
     assertThat(currencies.get(2).currency()).isEqualTo("JPY");
 
+  }
+
+
+  @Test
+  void testAddCurrencyValidationConstraintsInvalidCurrency() throws Exception {
+
+    mvc.perform(post("/api/v1/currencies")
+            .param("currency", "US"))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
   }
+
+  @Test
+  void testAddCurrencyValidationConstraintsValidCurrency() throws Exception {
+
+    mvc.perform(post("/api/v1/currencies")
+            .param("currency", "USD"))
+        .andExpect(MockMvcResultMatchers.status().isCreated());
+
+  }
+
+  @Test
+  void testAddCurrencyWhenCurrencyAlreadyExists() throws Exception {
+    doThrow(new CurrencyAlreadyExistException("USD")).when(currencyService)
+        .addCurrency(new CurrencyDto("EUR"));
+
+    mvc.perform(post("/api/v1/currencies")
+            .param("currency", "EUR"))
+        .andExpect(MockMvcResultMatchers.status().isConflict());
+
+  }
+
 
 }
 
