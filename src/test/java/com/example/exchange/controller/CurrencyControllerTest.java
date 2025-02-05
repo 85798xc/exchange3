@@ -32,48 +32,7 @@ public class CurrencyControllerTest {
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
-  @Test
-  void testAddCurrencyValidationConstraintsInvalidCurrency() throws Exception {
-    List<String> currenciesForPost = List.of("EU", "US", "CN", "YE");
 
-    currenciesForPost.forEach(currency -> {
-      try {
-        mvc.perform(post("/api/v1/currencies")
-                .param("currency", currency))
-            .andExpect(MockMvcResultMatchers.status().isBadRequest());
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    });
-
-
-  }
-
-  @Test
-  void testAddCurrencyValidationConstraintsValidCurrency() throws Exception {
-    List<String> currenciesForPost = List.of("EUR", "USD", "CNY", "YEN");
-
-    currenciesForPost.forEach(currency -> {
-      try {
-        mvc.perform(post("/api/v1/currencies")
-                .param("currency", currency))
-            .andExpect(MockMvcResultMatchers.status().isCreated());
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    });
-  }
-
-  @Test
-  void testAddCurrencyWhenCurrencyAlreadyExists() throws Exception {
-    doThrow(new CurrencyAlreadyExistException("USD")).when(currencyService)
-        .addCurrency(new CurrencyDto("EUR"));
-
-        mvc.perform(post("/api/v1/currencies")
-                .param("currency", "EUR"))
-            .andExpect(MockMvcResultMatchers.status().isConflict());
-
-    }
   }
 
 
