@@ -18,12 +18,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(CurrencyController.class)
 public class CurrencyControllerTest {
 
-  private static final String VALID_CURRENCY = "EUR";
+  private static final String VALID_CURRENCY_EUR = "EUR";
 
   @MockitoBean
   CurrencyService currencyService;
@@ -35,7 +34,7 @@ public class CurrencyControllerTest {
   @Test
   void performGetShouldReturnOk() throws Exception {
 
-    List<CurrencyDto> mockCurrencies = List.of(new CurrencyDto(VALID_CURRENCY));
+    List<CurrencyDto> mockCurrencies = List.of(new CurrencyDto(VALID_CURRENCY_EUR));
 
     when(currencyService.getAllCurrencies()).thenReturn(mockCurrencies);
 
@@ -48,7 +47,7 @@ public class CurrencyControllerTest {
         objectMapper.getTypeFactory().constructCollectionType(List.class, CurrencyDto.class));
 
     assertThat(currencies.size()).isEqualTo(1);
-    assertThat(currencies.get(0).currency()).isEqualTo(VALID_CURRENCY);
+    assertThat(currencies.get(0).currency()).isEqualTo(VALID_CURRENCY_EUR);
 
 
   }
@@ -56,17 +55,17 @@ public class CurrencyControllerTest {
   @Test
   void performPostShouldReturnCreated() throws Exception {
 
-    CurrencyDto mockCurrency = new CurrencyDto(VALID_CURRENCY);
+    CurrencyDto mockCurrency = new CurrencyDto(VALID_CURRENCY_EUR);
     when(currencyService.addCurrency(any(CurrencyDto.class))).thenReturn(mockCurrency);
 
     MvcResult mvcResult = mvc.perform(
-            post("/api/v1/currencies").param("currency", VALID_CURRENCY).contentType(MediaType.APPLICATION_JSON))
+            post("/api/v1/currencies").param("currency", VALID_CURRENCY_EUR).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated()).andReturn();
 
     String responseBody = mvcResult.getResponse().getContentAsString();
     CurrencyDto responseCurrency = objectMapper.readValue(responseBody, CurrencyDto.class);
 
-    assertThat(responseCurrency.currency()).isEqualTo(VALID_CURRENCY);
+    assertThat(responseCurrency.currency()).isEqualTo(VALID_CURRENCY_EUR);
   }
 
 }

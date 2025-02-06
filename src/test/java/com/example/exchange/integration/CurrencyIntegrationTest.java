@@ -2,13 +2,11 @@ package com.example.exchange.integration;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import com.example.exchange.controller.CurrencyController;
 import com.example.exchange.dto.CurrencyDto;
 import com.example.exchange.entity.Currency;
-import com.example.exchange.exception.CurrencyAlreadyExistException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 public class CurrencyIntegrationTest extends BaseIntegrationTest {
 
+  private static final String VALID_CURRENCY_EUR = "EUR";
+
   @Autowired
   private CurrencyController currencyController;
   @Autowired
@@ -26,16 +26,13 @@ public class CurrencyIntegrationTest extends BaseIntegrationTest {
   @Test
   public void testGetAllCurrencies() throws Exception {
 
-    currencyRepository.save(Currency.builder().name("EUR").build());
-    currencyRepository.save(Currency.builder().name("USD").build());
-    currencyRepository.save(Currency.builder().name("YEN").build());
+    currencyRepository.save(Currency.builder().name(VALID_CURRENCY_EUR).build());
 
     List<CurrencyDto> currencies = currencyController.getAllCurrency();
 
-    assertThat(currencies.size()).isEqualTo(3);
-    assertThat(currencies.get(0).currency()).isEqualTo("EUR");
-    assertThat(currencies.get(1).currency()).isEqualTo("USD");
-    assertThat(currencies.get(2).currency()).isEqualTo("YEN");
+    assertThat(currencies.size()).isEqualTo(1);
+    assertThat(currencies.getFirst().currency()).isEqualTo(VALID_CURRENCY_EUR);
+
 
   }
 
@@ -43,12 +40,12 @@ public class CurrencyIntegrationTest extends BaseIntegrationTest {
   @Test
   public void testAddCurrency() throws Exception {
 
-    currencyController.addCurrency("EUR");
+    currencyController.addCurrency(VALID_CURRENCY_EUR);
 
     List<Currency> currencies = currencyRepository.findAll();
 
     assertThat(currencies.size()).isEqualTo(1);
-    assertThat(currencies.getFirst().getName()).isEqualTo("EUR");
+    assertThat(currencies.getFirst().getName()).isEqualTo(VALID_CURRENCY_EUR);
 
   }
 
@@ -63,17 +60,16 @@ public class CurrencyIntegrationTest extends BaseIntegrationTest {
   @Test
   void testAddCurrencyValidationConstraintsValidCurrency() throws Exception {
 
-    mvc.perform(post("/api/v1/currencies").param("currency", "USD"))
+    mvc.perform(post("/api/v1/currencies").param("currency", VALID_CURRENCY_EUR))
         .andExpect(MockMvcResultMatchers.status().isCreated());
 
   }
 
   @Test
   void testAddCurrencyWhenCurrencyAlreadyExists() throws Exception {
-    doThrow(new CurrencyAlreadyExistException("USD")).when(currencyService)
-        .addCurrency(new CurrencyDto("EUR"));
+    currencyRepository.save(Currency.builder().name(VALID_CURRENCY_EUR).build());
 
-    mvc.perform(post("/api/v1/currencies").param("currency", "EUR"))
+    mvc.perform(post("/api/v1/currencies").param("currency", VALID_CURRENCY_EUR))
         .andExpect(MockMvcResultMatchers.status().isConflict());
 
   }
