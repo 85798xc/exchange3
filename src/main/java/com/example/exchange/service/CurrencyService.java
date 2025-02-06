@@ -23,14 +23,12 @@ public class CurrencyService {
 
   public CurrencyDto addCurrency(CurrencyDto currencyDto) {
 
-    Currency existingCurrency = currencyRepository.findByName(currencyDto.currency());
-
-    if (existingCurrency != null) {
+    if (currencyRepository.existsByName(currencyDto.currency())) {
       throw new CurrencyAlreadyExistException(currencyDto.currency());
     }
 
-    currencyRepository.save(currencyMapper.toEntity(currencyDto));
+    Currency currency = currencyRepository.save(currencyMapper.toEntity(currencyDto));
 
-    return currencyDto;
+    return currencyMapper.toDto(currency);
   }
 }

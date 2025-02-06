@@ -2,19 +2,26 @@ package com.example.exchange.integration;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import com.example.exchange.controller.CurrencyController;
 import com.example.exchange.dto.CurrencyDto;
 import com.example.exchange.entity.Currency;
+import com.example.exchange.exception.CurrencyAlreadyExistException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
 public class CurrencyIntegrationTest extends BaseIntegrationTest {
 
   @Autowired
   private CurrencyController currencyController;
+  @Autowired
+  private MockMvc mvc;
 
   @Test
   public void testGetAllCurrencies() throws Exception {
@@ -40,10 +47,36 @@ public class CurrencyIntegrationTest extends BaseIntegrationTest {
 
     List<Currency> currencies = currencyRepository.findAll();
 
-    System.out.println(currencies);
-
+    assertThat(currencies.size()).isEqualTo(1);
     assertThat(currencies.getFirst().getName()).isEqualTo("EUR");
 
   }
+
+  @Test
+  void testAddCurrencyValidationConstraintsInvalidCurrency() throws Exception {
+
+    mvc.perform(post("/api/v1/currencies").param("currency", "US"))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+  }
+
+  @Test
+  void testAddCurrencyValidationConstraintsValidCurrency() throws Exception {
+
+    mvc.perform(post("/api/v1/currencies").param("currency", "USD"))
+        .andExpect(MockMvcResultMatchers.status().isCreated());
+
+  }
+
+  @Test
+  void testAddCurrencyWhenCurrencyAlreadyExists() throws Exception {
+    doThrow(new CurrencyAlreadyExistException("USD")).when(currencyService)
+        .addCurrency(new CurrencyDto("EUR"));
+
+    mvc.perform(post("/api/v1/currencies").param("currency", "EUR"))
+        .andExpect(MockMvcResultMatchers.status().isConflict());
+
+  }
+
 
 }

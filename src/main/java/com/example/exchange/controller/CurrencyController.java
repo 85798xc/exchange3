@@ -1,7 +1,6 @@
 package com.example.exchange.controller;
 
 import com.example.exchange.dto.CurrencyDto;
-import com.example.exchange.entity.Currency;
 import com.example.exchange.service.CurrencyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -53,7 +51,7 @@ public class CurrencyController {
       @RequestParam("currency") @Pattern(regexp = "[A-Z]{3}",
           message = "Currency must be provided in format of 3 CAPITAL letters")
       String currency) {
-    System.out.println(currency);
+
     return currencyService.addCurrency(new CurrencyDto(currency));
   }
 }
