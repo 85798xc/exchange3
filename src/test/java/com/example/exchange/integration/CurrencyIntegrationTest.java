@@ -49,21 +49,6 @@ public class CurrencyIntegrationTest extends BaseIntegrationTest {
 
   }
 
-  @Test
-  void testAddCurrencyValidationConstraintsInvalidCurrency() throws Exception {
-
-    mvc.perform(post("/api/v1/currencies").param("currency", "US"))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest());
-
-  }
-
-  @Test
-  void testAddCurrencyValidationConstraintsValidCurrency() throws Exception {
-
-    mvc.perform(post("/api/v1/currencies").param("currency", VALID_CURRENCY_EUR))
-        .andExpect(MockMvcResultMatchers.status().isCreated());
-
-  }
 
   @Test
   void testAddCurrencyWhenCurrencyAlreadyExists() throws Exception {

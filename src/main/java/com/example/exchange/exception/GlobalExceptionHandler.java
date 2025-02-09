@@ -14,26 +14,24 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<ErrorResponse> handleConstraintViolationException(
-      ConstraintViolationException e) {
+      ConstraintViolationException e, HttpServletRequest request) {
     String errorMessage = e.getMessage();
     ErrorResponse errorResponse = new ErrorResponse(
-        "Validation Error",
+        request.getRequestURI(),
         e.getMessage(),
         Instant.now(),
-        HttpStatus.BAD_REQUEST.value()
-    );
+        HttpStatus.BAD_REQUEST.value());
 
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(CurrencyAlreadyExistException.class)
   public ResponseEntity<ErrorResponse> handleCurrencyAlreadyExistsException(
-      CurrencyAlreadyExistException ex,
-      HttpServletRequest request) {
+      CurrencyAlreadyExistException e, HttpServletRequest request) {
 
     ErrorResponse errorResponse = new ErrorResponse(
         request.getRequestURI(),
-        ex.getMessage(),
+        e.getMessage(),
         Instant.now(),
         HttpStatus.CONFLICT.value()
 
@@ -42,5 +40,29 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
 
+  @ExceptionHandler(CacheEmptyException.class)
+  public ResponseEntity<ErrorResponse> handleCacheEmptyException(CacheEmptyException e,
+      HttpServletRequest request) {
+
+    ErrorResponse errorResponse = new ErrorResponse(
+        request.getRequestURI(),
+        e.getMessage(),
+        Instant.now(),
+        HttpStatus.SERVICE_UNAVAILABLE.value());
+    return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
+  }
+
+  @ExceptionHandler(NoSuchCurrencyExistsException.class)
+  public ResponseEntity<ErrorResponse> handleNoSuchCurrencyExistsException(
+      NoSuchCurrencyExistsException e, HttpServletRequest request) {
+
+    ErrorResponse errorResponse = new ErrorResponse(
+        request.getRequestURI(),
+        e.getMessage(),
+        Instant.now(),
+        HttpStatus.NO_CONTENT.value());
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.NO_CONTENT);
+  }
 
 }

@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(CurrencyController.class)
 public class CurrencyControllerTest {
@@ -66,6 +67,22 @@ public class CurrencyControllerTest {
     CurrencyDto responseCurrency = objectMapper.readValue(responseBody, CurrencyDto.class);
 
     assertThat(responseCurrency.currency()).isEqualTo(VALID_CURRENCY_EUR);
+  }
+
+  @Test
+  void testAddCurrencyValidationConstraintsInvalidCurrency() throws Exception {
+
+    mvc.perform(post("/api/v1/currencies").param("currency", "US"))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+  }
+
+  @Test
+  void testAddCurrencyValidationConstraintsValidCurrency() throws Exception {
+
+    mvc.perform(post("/api/v1/currencies").param("currency", VALID_CURRENCY_EUR))
+        .andExpect(MockMvcResultMatchers.status().isCreated());
+
   }
 
 }
