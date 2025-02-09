@@ -48,7 +48,7 @@ public class CurrencyControllerTest {
         objectMapper.getTypeFactory().constructCollectionType(List.class, CurrencyDto.class));
 
     assertThat(currencies.size()).isEqualTo(1);
-    assertThat(currencies.get(0).currency()).isEqualTo(VALID_CURRENCY_EUR);
+    assertThat(currencies.getFirst().currency()).isEqualTo(VALID_CURRENCY_EUR);
 
 
   }
@@ -60,8 +60,10 @@ public class CurrencyControllerTest {
     when(currencyService.addCurrency(any(CurrencyDto.class))).thenReturn(mockCurrency);
 
     MvcResult mvcResult = mvc.perform(
-            post("/api/v1/currencies").param("currency", VALID_CURRENCY_EUR).contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isCreated()).andReturn();
+            post("/api/v1/currencies").param("currency", VALID_CURRENCY_EUR)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andReturn();
 
     String responseBody = mvcResult.getResponse().getContentAsString();
     CurrencyDto responseCurrency = objectMapper.readValue(responseBody, CurrencyDto.class);
