@@ -15,7 +15,6 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<ErrorResponse> handleConstraintViolationException(
       ConstraintViolationException e, HttpServletRequest request) {
-    String errorMessage = e.getMessage();
     ErrorResponse errorResponse = new ErrorResponse(
         request.getRequestURI(),
         e.getMessage(),
