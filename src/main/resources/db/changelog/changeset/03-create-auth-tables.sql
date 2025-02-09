@@ -29,8 +29,8 @@ INSERT INTO authorities (authority) VALUES
                                         ('ADMIN');
 
 INSERT INTO users (username, password) VALUES
-                                           ('Peter', '$2a$12$RpT8PyQS7680K7ecWiWBOOrCG9yv5SXsy..0kBy6oF4Hid7Eoy/Sq'),
-                                           ('Ben', '$2a$12$RpT8PyQS7680K7ecWiWBOOrCG9yv5SXsy..0kBy6oF4Hid7Eoy/Sq');
+                                ('User', '$2a$12$iwcZ6JWSBpkUC4gkQjNtGeT.lVigWROK2H4YZ0KW.GqXoYwDSTrea'),
+                                ('Admin', '$2a$12$r52NurS3bniiqq3HDDnoVO3k5trDKrgBYKbfKpd9/FcoD1kapLTFG');
 
 INSERT INTO user_authorities (id_user, id_authority) VALUES
                                                          (1, 1),
