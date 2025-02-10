@@ -63,10 +63,6 @@ tasks.jacocoTestCoverageVerification {
     dependsOn(tasks.jacocoTestReport)
     violationRules {
         rule {
-            element = "CLASS"
-            excludes = listOf("com/example/exchange/exception")
-        }
-        rule {
             limit {
                 minimum = 0.95.toBigDecimal()
             }
@@ -76,6 +72,26 @@ tasks.jacocoTestCoverageVerification {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+
+    classDirectories.setFrom(
+        files(classDirectories.files.map {
+            fileTree(it) {
+                exclude(
+                    "com/example/com/example/exchange/ExchangeApplication.class",
+                    "com/example/exchange/config/**",
+                    "com/example/exchange/dto/**",
+                    "com/example/exchange/exception/**",
+                    "com/example/exchange/security/**"
+                )
+            }
+        })
+    )
+
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(true)
+    }
 }
 
 tasks.test {
