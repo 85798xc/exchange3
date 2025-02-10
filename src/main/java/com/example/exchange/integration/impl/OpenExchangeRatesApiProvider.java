@@ -5,11 +5,13 @@ import com.example.exchange.integration.ExchangeRatesApiProvider;
 import com.example.exchange.integration.ExchangeRatesApiResponse;
 import com.example.exchange.integration.ExchangeRatesResponseWithMetadata;
 import java.time.Instant;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
+@RequiredArgsConstructor
 public class OpenExchangeRatesApiProvider implements ExchangeRatesApiProvider {
-  private final RestTemplate restTemplate = new RestTemplate();
+  private final RestTemplate restTemplate;
 
   @Value("${fixer.api.url}")
   private String openApiUrl;

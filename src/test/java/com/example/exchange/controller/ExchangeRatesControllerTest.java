@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.exchange.exception.CacheEmptyException;
+import com.example.exchange.integration.impl.ExchangeRatesApiService;
 import com.example.exchange.service.ExchangeRatesService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -31,6 +33,8 @@ class ExchangeRatesControllerTest {
   private MockMvc mvc;
   @MockitoBean
   private ExchangeRatesService exchangeRatesService;
+  @MockitoBean
+  private ExchangeRatesApiService exchangeRatesApiService;
   @Autowired
   private ObjectMapper objectMapper;
 
@@ -85,7 +89,9 @@ class ExchangeRatesControllerTest {
   }
 
   @Test
-  void getExchangeRatesWhencacheIsEmpty() throws Exception {
+  void getExchangeRatesWhenCacheIsEmpty() throws Exception {
+    when(exchangeRatesService.getExchangeRates(any(), any()))
+        .thenThrow(new CacheEmptyException());
 
     mvc.perform(get("/api/v1/exchange-rates")
             .param("currency", VALID_CURRENCY_EUR)

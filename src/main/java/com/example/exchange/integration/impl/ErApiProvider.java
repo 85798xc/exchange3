@@ -5,14 +5,16 @@ import com.example.exchange.integration.ExchangeRatesApiProvider;
 import com.example.exchange.integration.ExchangeRatesApiResponse;
 import com.example.exchange.integration.ExchangeRatesResponseWithMetadata;
 import java.time.Instant;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
+@RequiredArgsConstructor
 public class ErApiProvider implements ExchangeRatesApiProvider {
 
-  private final RestTemplate restTemplate = new RestTemplate();
+  private final RestTemplate restTemplate;
 
   @Value("${exchangerates.api.url}")
   private String erApiUrl;
@@ -26,16 +28,15 @@ public class ErApiProvider implements ExchangeRatesApiProvider {
 
     var response = restTemplate.getForObject(url, ExchangeRatesApiResponse.class);
 
+    String responseString = "";
+
     if (response != null && response.success()) {
-      return new ExchangeRatesResponseWithMetadata(
-          new ApiRequestLogDto(response.toString(),url,Instant.now()),
-          response
-      );
-    } else {
-      return new ExchangeRatesResponseWithMetadata(
-          new ApiRequestLogDto(response != null ? response.toString() : "", url, Instant.now()),
-          response
-      );
+      responseString = response.toString();
     }
+
+    return new ExchangeRatesResponseWithMetadata(
+        new ApiRequestLogDto(responseString, url, Instant.now()),
+        response
+    );
   }
 }

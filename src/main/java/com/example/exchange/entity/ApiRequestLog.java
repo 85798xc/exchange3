@@ -31,6 +31,6 @@ public class ApiRequestLog {
   @Column(nullable = false)
   private String url;
 
-  @Column(columnDefinition = "TEXT")
+
   private String response;
 }

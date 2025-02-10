@@ -28,7 +28,7 @@ public class CurrencyControllerTest {
 
   private static final String VALID_CURRENCY_EUR = "EUR";
 
-  @Mock
+  @MockitoBean
   CurrencyService currencyService;
   @Autowired
   private MockMvc mvc;

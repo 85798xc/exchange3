@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class FixerApiProvider implements ExchangeRatesApiProvider {
 
-  private final RestTemplate restTemplate = new RestTemplate();
+  private final RestTemplate restTemplate;
 
   @Value("${fixer.api.url}")
   private String fixerApiUrl;

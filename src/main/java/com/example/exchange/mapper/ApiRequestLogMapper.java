@@ -16,7 +16,8 @@ public class ApiRequestLogMapper {
 
 
   public ApiRequestLog toApiRequestLog(ApiRequestLogDto apiRequestLogDto) {
-    return ApiRequestLog.builder().response(apiRequestLogDto.response())
+    return ApiRequestLog.builder()
+        .response(apiRequestLogDto.response())
         .url(apiRequestLogDto.url())
         .timestamp(Instant.now()).build();
 
