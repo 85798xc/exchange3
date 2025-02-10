@@ -1,4 +1,4 @@
-package com.example.exchange.integration;
+package com.example.exchange.provider.response;
 
 import com.example.exchange.dto.ApiRequestLogDto;
 

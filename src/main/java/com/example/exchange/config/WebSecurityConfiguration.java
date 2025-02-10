@@ -1,4 +1,4 @@
-package com.example.exchange.configuration;
+package com.example.exchange.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

@@ -1,7 +1,6 @@
-package com.example.exchange.integration;
+package com.example.exchange.provider;
 
-import java.math.BigDecimal;
-import java.util.Map;
+import com.example.exchange.provider.response.ExchangeRatesResponseWithMetadata;
 
 public interface ExchangeRatesApiProvider {
   ExchangeRatesResponseWithMetadata getExchangeRates(String currencyCodes);

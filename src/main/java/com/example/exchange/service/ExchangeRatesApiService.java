@@ -1,11 +1,11 @@
-package com.example.exchange.integration.impl;
+package com.example.exchange.service;
 
 import com.example.exchange.dto.ApiRequestLogDto;
 import com.example.exchange.dto.CurrencyDto;
 import com.example.exchange.mapper.ApiRequestLogMapper;
+import com.example.exchange.provider.impl.ErApiProvider;
+import com.example.exchange.provider.impl.FixerApiProvider;
 import com.example.exchange.repository.ApiRequestLogRepository;
-import com.example.exchange.service.CurrencyService;
-import com.example.exchange.service.ExchangeRatesCache;
 import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -71,7 +71,7 @@ public class ExchangeRatesApiService {
                       List<BigDecimal> rates = exchangeRatesFromApis.stream()
                           .map(provider -> calculateRate(provider, fromCurrency, toCurrency))
                           .filter(provider -> !provider.equals(BigDecimal.ONE))
-                          .collect(Collectors.toList());
+                          .toList();
 
                       return compareRates(rates);
                     }

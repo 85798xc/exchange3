@@ -1,4 +1,4 @@
-package com.example.exchange.configuration;
+package com.example.exchange.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

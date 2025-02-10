@@ -1,4 +1,4 @@
-package com.example.exchange.integration;
+package com.example.exchange.provider.response;
 
 import java.math.BigDecimal;
 import java.time.Instant;

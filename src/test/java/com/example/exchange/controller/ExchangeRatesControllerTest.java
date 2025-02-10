@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.exchange.exception.CacheEmptyException;
-import com.example.exchange.integration.impl.ExchangeRatesApiService;
+import com.example.exchange.service.ExchangeRatesApiService;
 import com.example.exchange.service.ExchangeRatesService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;

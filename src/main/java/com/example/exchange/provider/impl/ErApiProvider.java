@@ -1,9 +1,9 @@
-package com.example.exchange.integration.impl;
+package com.example.exchange.provider.impl;
 
 import com.example.exchange.dto.ApiRequestLogDto;
-import com.example.exchange.integration.ExchangeRatesApiProvider;
-import com.example.exchange.integration.ExchangeRatesApiResponse;
-import com.example.exchange.integration.ExchangeRatesResponseWithMetadata;
+import com.example.exchange.provider.ExchangeRatesApiProvider;
+import com.example.exchange.provider.response.ExchangeRatesApiResponse;
+import com.example.exchange.provider.response.ExchangeRatesResponseWithMetadata;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,15 +28,10 @@ public class ErApiProvider implements ExchangeRatesApiProvider {
 
     var response = restTemplate.getForObject(url, ExchangeRatesApiResponse.class);
 
-    String responseString = "";
-
-    if (response != null && response.success()) {
-      responseString = response.toString();
-    }
-
     return new ExchangeRatesResponseWithMetadata(
-        new ApiRequestLogDto(responseString, url, Instant.now()),
+        new ApiRequestLogDto(response != null ? response.toString() : "", url, Instant.now()),
         response
     );
   }
 }
+

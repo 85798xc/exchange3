@@ -1,9 +1,9 @@
-package com.example.exchange.integration.impl;
+package com.example.exchange.provider.impl;
 
 import com.example.exchange.dto.ApiRequestLogDto;
-import com.example.exchange.integration.ExchangeRatesApiProvider;
-import com.example.exchange.integration.ExchangeRatesApiResponse;
-import com.example.exchange.integration.ExchangeRatesResponseWithMetadata;
+import com.example.exchange.provider.ExchangeRatesApiProvider;
+import com.example.exchange.provider.response.ExchangeRatesApiResponse;
+import com.example.exchange.provider.response.ExchangeRatesResponseWithMetadata;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 public class OpenExchangeRatesApiProvider implements ExchangeRatesApiProvider {
+
   private final RestTemplate restTemplate;
 
   @Value("${fixer.api.url}")
@@ -25,16 +26,10 @@ public class OpenExchangeRatesApiProvider implements ExchangeRatesApiProvider {
 
     var response = restTemplate.getForObject(url, ExchangeRatesApiResponse.class);
 
-    if (response != null && response.success()) {
-      return new ExchangeRatesResponseWithMetadata(
-          new ApiRequestLogDto(response.toString(), url, Instant.now()),
-          response
-      );
-    } else {
-      return new ExchangeRatesResponseWithMetadata(
-          new ApiRequestLogDto(response != null ? response.toString() : "", url, Instant.now()),
-          response
-      );
-    }
+    return new ExchangeRatesResponseWithMetadata(
+        new ApiRequestLogDto(response != null ? response.toString() : "", url, Instant.now()),
+        response
+    );
   }
 }
+
