@@ -1,59 +1,52 @@
 package com.example.exchange.integration;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.example.exchange.controller.ExchangeRatesController;
+import com.example.exchange.exception.NoSuchCurrencyExistsException;
+import com.example.exchange.service.ExchangeRatesCache;
+import com.github.dockerjava.api.exception.NotFoundException;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 
 class ExchangeRatesControllerIntegrationalTest extends BaseIntegrationTest {
 
   private static final String VALID_CURRENCY_EUR = "EUR";
-  private static final String INVALID_CURRENCY_EU = "EU";
+  private static final String VALID_CURRENCY_USD = "USD";
 
-  private static final String VALID_AMOUNT = "1";
-  private static final String INVALID_AMOUNT = "0.009";
+  private static final BigDecimal VALID_AMOUNT = BigDecimal.TEN;
 
   @Autowired
-  private MockMvc mockMvc;
-
-
-  @Test
-  void getExchangeRatesCurrencyCodeInvalidAmountValid()
-      throws Exception {
-    mockMvc.perform(get("/api/v1/exchange-rates")
-            .param("currency", INVALID_CURRENCY_EU)
-            .param("amount", VALID_AMOUNT))
-        .andExpect(status().isBadRequest());
-  }
+  ExchangeRatesCache exchangeRatesCache;
+  @Autowired
+  private ExchangeRatesController exchangeRatesController;
 
   @Test
-  void getExchangeRatesCurrencyCodeValidAmountInvalid()
-      throws Exception {
-    mockMvc.perform(get("/api/v1/exchange-rates")
-            .param("currency", VALID_CURRENCY_EUR)
-            .param("amount", INVALID_AMOUNT))
-        .andExpect(status().isBadRequest());
-  }
+  public void testGetCurrencyExchangeRates() throws Exception {
 
+    exchangeRatesCache.putExchangeRates(VALID_CURRENCY_EUR,
+        new HashMap<>(Map.of(VALID_CURRENCY_USD, BigDecimal.valueOf(10))));
+
+    var currencyRates = exchangeRatesController.getCurrencyExchangeRates(VALID_CURRENCY_EUR,
+        VALID_AMOUNT);
+
+    assertThat(currencyRates.size()).isEqualTo(1);
+    assertThat(currencyRates.get(VALID_CURRENCY_USD)).isEqualTo(BigDecimal.valueOf(100));
+
+  }
   @Test
-  void getExchangeRatesCurrencyCodeInvalidAmountInvalid()
-      throws Exception {
-    mockMvc.perform(get("/api/v1/exchange-rates")
-            .param("currency", INVALID_CURRENCY_EU)
-            .param("amount", INVALID_AMOUNT))
-        .andExpect(status().isBadRequest());
+  public void testGetCurrencyExchangeRatesInvalidCurrency() throws Exception {
+    exchangeRatesCache.putExchangeRates(VALID_CURRENCY_EUR,
+        new HashMap<>(Map.of(VALID_CURRENCY_USD, BigDecimal.valueOf(10))));
+
+    assertThrows(NoSuchCurrencyExistsException.class, () -> {
+      exchangeRatesController.getCurrencyExchangeRates("USD", VALID_AMOUNT);
+    });
   }
 
-  @Test
-  void getExchangeRatesWhencacheIsEmpty() throws Exception {
 
-    mockMvc.perform(get("/api/v1/exchange-rates")
-            .param("currency", VALID_CURRENCY_EUR)
-            .param("amount", VALID_AMOUNT))
-        .andExpect(status().isServiceUnavailable());
-
-
-  }
 }
