@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  private static ErrorResponse makeErrorResponse(HttpServletRequest request, Exception e) {
+    return new ErrorResponse(request.getRequestURI(), e.getMessage(), Instant.now());
+  }
+
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<ErrorResponse> handleConstraintViolationException(
       ConstraintViolationException e, HttpServletRequest request) {
-    ErrorResponse errorResponse = new ErrorResponse(
-        request.getRequestURI(),
-        e.getMessage(),
-        Instant.now(),
-        HttpStatus.BAD_REQUEST.value());
+
+    ErrorResponse errorResponse = makeErrorResponse(request, e);
 
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
@@ -28,26 +29,17 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleCurrencyAlreadyExistsException(
       CurrencyAlreadyExistException e, HttpServletRequest request) {
 
-    ErrorResponse errorResponse = new ErrorResponse(
-        request.getRequestURI(),
-        e.getMessage(),
-        Instant.now(),
-        HttpStatus.CONFLICT.value()
-
-    );
+    ErrorResponse errorResponse = makeErrorResponse(request, e);
 
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(CacheEmptyException.class)
-  public ResponseEntity<ErrorResponse> handleCacheEmptyException(CacheEmptyException e,
-      HttpServletRequest request) {
+  public ResponseEntity<ErrorResponse> handleCacheEmptyException(
+      CacheEmptyException e, HttpServletRequest request) {
 
-    ErrorResponse errorResponse = new ErrorResponse(
-        request.getRequestURI(),
-        e.getMessage(),
-        Instant.now(),
-        HttpStatus.SERVICE_UNAVAILABLE.value());
+    ErrorResponse errorResponse = makeErrorResponse(request, e);
+
     return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
   }
 
@@ -55,11 +47,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleNoSuchCurrencyExistsException(
       NoSuchCurrencyExistsException e, HttpServletRequest request) {
 
-    ErrorResponse errorResponse = new ErrorResponse(
-        request.getRequestURI(),
-        e.getMessage(),
-        Instant.now(),
-        HttpStatus.NO_CONTENT.value());
+    ErrorResponse errorResponse = makeErrorResponse(request, e);
 
     return new ResponseEntity<>(errorResponse, HttpStatus.NO_CONTENT);
   }
