@@ -2,7 +2,7 @@ package com.example.exchange.security;
 
 import com.example.exchange.entity.Authority;
 import com.example.exchange.repository.CurrencyUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,14 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class CurrencyUserService implements UserDetailsService {
 
   private final CurrencyUserRepository currencyUserRepository;
-
-  @Autowired
-  public CurrencyUserService(CurrencyUserRepository currencyUserRepository) {
-    this.currencyUserRepository = currencyUserRepository;
-  }
 
   @Override
   @Transactional(readOnly = true)

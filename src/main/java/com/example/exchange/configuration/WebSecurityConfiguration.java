@@ -4,7 +4,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import com.example.exchange.security.CurrencyUserService;
 import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,15 +22,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class WebSecurityConfiguration {
 
 
   private final CurrencyUserService currencyUserService;
-
-  @Autowired
-  public WebSecurityConfiguration(CurrencyUserService currencyUserService) {
-    this.currencyUserService = currencyUserService;
-  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
