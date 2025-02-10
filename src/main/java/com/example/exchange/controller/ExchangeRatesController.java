@@ -28,7 +28,7 @@ public class ExchangeRatesController {
 
   @GetMapping("/exchange-rates")
   @ResponseStatus(HttpStatus.OK)
-  @Operation(summary = "Get  latest exchange rates ",
+  @Operation(summary = "Get  latest exchange rates from cache",
       description = "This API endpoint returns exchange rates.")
   @ApiResponse(responseCode = "200",
       description = "Successful response, returns exchange rates",
@@ -46,6 +46,14 @@ public class ExchangeRatesController {
   ) {
     return exchangeRatesService.getExchangeRates(currency, amount);
   }
-
-
+//@ResponseStatus(HttpStatus.OK)
+//  @Operation(summary = "Get  latest exchange rates from 3rd apis",
+//      description = "This API endpoint returns exchange rates.")
+//  @ApiResponse(responseCode = "200",
+//      description = "Successful response, returns exchange rates",
+//      content = @Content(mediaType = "application/json"))
+//@GetMapping("/get-rates")
+//  public Map<String, BigDecimal> getRates() {
+//    return fixerApiProvider.getExchangeRates();
+//  }
 }

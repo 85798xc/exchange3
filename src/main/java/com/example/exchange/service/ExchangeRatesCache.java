@@ -23,8 +23,8 @@ public class ExchangeRatesCache {
     return exchangeRatesForConcreteCurrency;
   }
 
-  public void putExchangeRates(String currency, Map<String, BigDecimal> exchangeRatesFromApi) {
-    exchangeRates.put(currency, exchangeRatesFromApi);
+  public void putExchangeRates(Map<String, Map<String, BigDecimal>> exchangeRatesFromApi) {
+    exchangeRates.putAll(exchangeRatesFromApi);
   }
 
   public void clearCache() {

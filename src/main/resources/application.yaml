@@ -15,3 +15,17 @@ spring:
 #   level:
 #     org.springframework: DEBUG
 #     com.zaxxer.hikari: DEBUG
+fixer:
+    api:
+      key: "0926a308c55d6bee1ebb6b4abb87dac9"
+      url: "http://data.fixer.io/api/latest"
+
+exchangerates:
+   api:
+     key: "eb7d05988189b8dff608f00e5eecfe7c"
+     url: "http://api.exchangeratesapi.io/v1/latest"
+
+openexchangerates:
+    api:
+       key: "54d98eaa50bf410cb3f7fd872a4568bb"
+       url: "https://openexchangerates.org/api/latest.json"

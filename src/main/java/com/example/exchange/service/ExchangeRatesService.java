@@ -12,7 +12,8 @@ public class ExchangeRatesService {
   private final ExchangeRatesCache exchangeRatesCache;
 
   public Map<String, BigDecimal> getExchangeRates(String currency, BigDecimal amount) {
-    var exchangeRates = exchangeRatesCache.getExchangeRates(currency);
+    var exchangeRates = new java.util.HashMap<>(
+        Map.copyOf(exchangeRatesCache.getExchangeRates(currency)));
 
     exchangeRates.replaceAll((key, value) -> value.multiply(amount));
 
