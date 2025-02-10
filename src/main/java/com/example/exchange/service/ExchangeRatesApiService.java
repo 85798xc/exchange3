@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class ExchangeRatesApiService {
   private final ApiRequestLogMapper apiRequestLogsMapper;
 
   @PostConstruct
+  @Scheduled(fixedRate = 360000)
   public void processExchangeRates() {
     var exchangeRatesFromApis = getExchangeRatesFromApisAndSaveLogs();
     var bestExchangeRates = calculateBestRates(exchangeRatesFromApis);
