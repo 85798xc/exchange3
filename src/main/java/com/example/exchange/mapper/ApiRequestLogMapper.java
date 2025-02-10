@@ -8,11 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApiRequestLogMapper {
 
-  public ApiRequestLogDto toApiRequestLogDto(ApiRequestLog apiRequestLog) {
-    return new ApiRequestLogDto(
-        apiRequestLog.getResponse(), apiRequestLog.getUrl(), Instant.now()
-    );
-  }
 
 
   public ApiRequestLog toApiRequestLog(ApiRequestLogDto apiRequestLogDto) {
