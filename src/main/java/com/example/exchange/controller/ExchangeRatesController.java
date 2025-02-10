@@ -1,5 +1,6 @@
 package com.example.exchange.controller;
 
+import com.example.exchange.integration.impl.ExchangeRatesApiService;
 import com.example.exchange.service.ExchangeRatesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExchangeRatesController {
 
   private final ExchangeRatesService exchangeRatesService;
+  private final ExchangeRatesApiService exchangeRatesApiService;
 
   @GetMapping("/exchange-rates")
   @ResponseStatus(HttpStatus.OK)
@@ -47,4 +50,9 @@ public class ExchangeRatesController {
     return exchangeRatesService.getExchangeRates(currency, amount);
   }
 
+
+@GetMapping("/get-rates")
+  public void getRates() {
+    exchangeRatesApiService.processExchangeRates();
+  }
 }
