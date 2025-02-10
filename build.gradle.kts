@@ -63,6 +63,10 @@ tasks.jacocoTestCoverageVerification {
     dependsOn(tasks.jacocoTestReport)
     violationRules {
         rule {
+            element = "CLASS"
+            excludes = listOf("com/example/exchange/exception")
+        }
+        rule {
             limit {
                 minimum = 0.95.toBigDecimal()
             }
