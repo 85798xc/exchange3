@@ -48,7 +48,7 @@ class ExchangeRatesControllerTest {
     String responseBody = mvcResult.getResponse().getContentAsString();
     Map<String, BigDecimal> currenciesRates = objectMapper.readValue(responseBody,
         objectMapper.getTypeFactory().constructMapType(Map.class, String.class, BigDecimal.class));
-    System.out.println(currenciesRates);
+
     assertThat(currenciesRates.size()).isEqualTo(1);
     assertThat(currenciesRates.get(VALID_CURRENCY_EUR)).isEqualTo(VALID_AMOUNT);
 
