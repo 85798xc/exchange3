@@ -1,7 +1,7 @@
 databaseChangeLog:
   - include:
-       file: db/changelog/changeset/01-create-currencies.sql
+      file: db/changelog/changeset/01-create-currencies.sql
   - include:
-       file: db/changelog/changeset/02-create-api-request-logs.sql
+      file: db/changelog/changeset/02-create-api-request-logs.sql
   - include:
       file: db/changelog/changeset/03-create-auth-tables.sql
