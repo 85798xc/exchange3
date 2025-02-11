@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  private static ResponseEntity<ErrorResponse> makeResponseEntity(HttpServletRequest request, Exception e,HttpStatus status) {
-    return new ResponseEntity<>(new ErrorResponse(request.getRequestURI(), e.getMessage(), Instant.now()),HttpStatus.valueOf(status.value()));
+  private static ResponseEntity<ErrorResponse> makeResponseEntity(HttpServletRequest request,
+      Exception e, HttpStatus status) {
+    return new ResponseEntity<>(
+        new ErrorResponse(request.getRequestURI(), e.getMessage(), Instant.now()),
+        HttpStatus.valueOf(status.value()));
   }
 
   @ExceptionHandler(ConstraintViolationException.class)
