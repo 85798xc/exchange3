@@ -16,7 +16,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 public class BaseIntegrationTest {
 
   @ServiceConnection
-  private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15");
+  private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17");
   @Autowired
   public MockMvc mockMvc;
   @Autowired
