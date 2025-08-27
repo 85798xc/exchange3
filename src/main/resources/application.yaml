@@ -17,11 +17,11 @@ spring:
 #     com.zaxxer.hikari: DEBUG
 fixer:
     api:
-      key: "5f88ccee1cbf67c61ddea7fcd3011f45"
+      key: "1b4502a1f1391379b7f3b4aafadc4d51"
       url: "http://data.fixer.io/api/latest"
 
 exchangerates:
    api:
-     key: "36c1a23d7a43c48011c1d1f6b18fd9cc"
+     key: "8860fb47d81b5d9779e99b97dcd33939"
      url: "http://api.exchangeratesapi.io/v1/latest"
 
